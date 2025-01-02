@@ -8,6 +8,9 @@ class SidebarController extends GetxController {
   var isMoreMenuOpen = false.obs;
   var hoverIndex = (-1).obs; // Existing hover index for main items
   var hoverSubIndex = (-1).obs; // Add this line for sub-menu items
+  // New variables for dashboard submenu
+  final dashboardSelectedIndex = 0.obs;
+  final dashboardHoverIndex = (-1).obs;
 
   void changeIndex(int index) {
     selectedIndex.value = index;
@@ -23,5 +26,9 @@ class SidebarController extends GetxController {
 
   void toggleMoreMenu() {
     isMoreMenuOpen.value = !isMoreMenuOpen.value;
+  }
+
+  void changeDashboardIndex(int index) {
+    dashboardSelectedIndex.value = index;
   }
 }
