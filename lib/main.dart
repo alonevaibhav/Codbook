@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'Controller/SideBarController/SidebarController.dart';
-import 'Testing/sidebar/dashboard_page.dart';
+import 'View/Dashboard/dashboard_web.dart';
 
 void main() {
-  Get.put(SidebarController());
-  runApp(
-    GetMaterialApp(
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
       title: 'Dashboard App',
-      theme: ThemeData.dark(),
-      home:  DashboardPage(),
-    ),
-  );
+      // theme: ThemeData.dark(),
+      home: DashboardWeb(),
+      initialBinding: BindingsBuilder(() {
+        Get.lazyPut(() => SidebarController());
+      }),
+    );
+  }
 }
