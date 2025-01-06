@@ -79,39 +79,22 @@
 
 
 // First, let's update the CollectionController to track active states
+
 import 'package:get/get.dart';
 
-class RequestItem {
-  final String name;
-  final String method;
-  final String url;
+import '../../Model/SubSidebarModel/subsidebar_model.dart';
 
-  RequestItem({
-    required this.name,
-    this.method = 'GET',
-    this.url = '',
-  });
-}
-
-class CodeItem {
-  final String name;
-  final List<RequestItem> requests;
-
-  CodeItem({
-    required this.name,
-    List<RequestItem>? requests,
-  }) : requests = requests ?? [];
-}
-
-class CollectionItem {
+// lib/models/sidebar_models.dart
+class SidebarItem {
   final String name;
   final List<CodeItem> codeItems;
 
-  CollectionItem({
+  SidebarItem({
     required this.name,
-    List<CodeItem>? codeItems,
-  }) : codeItems = codeItems ?? [];
+    required this.codeItems,
+  });
 }
+
 
 class CollectionController extends GetxController {
   final collections = <CollectionItem>[].obs;
@@ -166,6 +149,4 @@ class CollectionController extends GetxController {
       );
     }
   }
-
-// ... rest of your existing controller methods ...
 }
