@@ -29,5 +29,18 @@ class CollectionItem {
   CollectionItem({
     required this.name,
     List<CodeItem>? codeItems,
+
   }) : codeItems = codeItems ?? [];
+}
+
+
+// lib/models/sidebar_models.dart
+class SidebarItem {
+  final String name;
+  final List<CodeItem> codeItems;
+
+  SidebarItem({
+    required this.name,
+    required this.codeItems,
+  });
 }

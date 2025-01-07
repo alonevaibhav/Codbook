@@ -1,11 +1,11 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../Controller/SubSidebar/CollectionController.dart';
 import '../../../Model/SubSidebarModel/subsidebar_model.dart';
 import '../../../Controller/SubSidebar/collapsible_controller.dart';
+import '../../../Testing/requst_controller.dart';
 import 'collapsible_section.dart';
 
 class SidebarContent extends StatelessWidget {
@@ -47,7 +47,7 @@ class SidebarContent extends StatelessWidget {
         constraints: const BoxConstraints(),
         icon: const FaIcon(
           FontAwesomeIcons.plus,
-          size: 14,
+          size: 20,
           color: Colors.white70,
         ),
         onPressed: onAddCollection,
@@ -56,18 +56,25 @@ class SidebarContent extends StatelessWidget {
   }
 
   Widget _buildCollectionsList() {
-    return Obx(() => Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: collectionController.collections.asMap().entries.map((entry) {
-        final collectionIndex = entry.key;
-        final collection = entry.value;
-        return _buildCollectionSection(collection, collectionIndex);
-      }).toList(),
-    ));
+    return Obx(() =>
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+          collectionController.collections
+              .asMap()
+              .entries
+              .map((entry) {
+            final collectionIndex = entry.key;
+            final collection = entry.value;
+            return _buildCollectionSection(collection, collectionIndex);
+          }).toList(),
+        ));
   }
 
-  Widget _buildCollectionSection(CollectionItem collection, int collectionIndex) {
-    final isCollectionActive = collectionController.activeCollectionIndex.value == collectionIndex;
+  Widget _buildCollectionSection(CollectionItem collection,
+      int collectionIndex) {
+    final isCollectionActive =
+        collectionController.activeCollectionIndex.value == collectionIndex;
 
     return CollapsibleSection(
       isCollapsed: collapsibleController.isCollapsed(collectionIndex),
@@ -77,20 +84,26 @@ class SidebarContent extends StatelessWidget {
       onToggle: () => collapsibleController.toggleCollapse(collectionIndex),
       onTap: () => collectionController.setActiveIndices(collectionIndex),
       trailing: _buildCollectionMenu(collectionIndex),
-      children: collection.codeItems.asMap().entries.map((codeEntry) {
-        return _buildCodeSection(codeEntry.value, collectionIndex, codeEntry.key);
+      children: collection.codeItems
+          .asMap()
+          .entries
+          .map((codeEntry) {
+        return _buildCodeSection(
+            codeEntry.value, collectionIndex, codeEntry.key);
       }).toList(),
     );
   }
 
-  Widget _buildCodeSection(CodeItem codeItem, int collectionIndex, int codeIndex) {
+  Widget _buildCodeSection(CodeItem codeItem, int collectionIndex,
+      int codeIndex) {
     final isCollectionActive = collectionController.activeCollectionIndex.value == collectionIndex;
     final isCodeActive = isCollectionActive && collectionController.activeCodeIndex.value == codeIndex;
 
     return Container(
       padding: const EdgeInsets.only(left: 24),
       child: InkWell(
-        onTap: () => collectionController.setActiveIndices(collectionIndex, codeIndex),
+        onTap: () =>
+            collectionController.setActiveIndices(collectionIndex, codeIndex),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -100,13 +113,16 @@ class SidebarContent extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   icon: FaIcon(
-                    collapsibleController.isCollapsed(collectionIndex, codeIndex)
+                    collapsibleController.isCollapsed(
+                        collectionIndex, codeIndex)
                         ? FontAwesomeIcons.caretRight
                         : FontAwesomeIcons.caretDown,
-                    size: 14,
+                    size: 18,
                     color: Colors.white70,
                   ),
-                  onPressed: () => collapsibleController.toggleCollapse(collectionIndex, codeIndex),
+                  onPressed: () =>
+                      collapsibleController.toggleCollapse(
+                          collectionIndex, codeIndex),
                 ),
                 const SizedBox(width: 8),
                 const FaIcon(
@@ -127,7 +143,10 @@ class SidebarContent extends StatelessWidget {
               ],
             ),
             if (!collapsibleController.isCollapsed(collectionIndex, codeIndex))
-              ...codeItem.requests.asMap().entries.map((requestEntry) {
+              ...codeItem.requests
+                  .asMap()
+                  .entries
+                  .map((requestEntry) {
                 return _buildRequestItem(
                   requestEntry.value,
                   isCodeActive,
@@ -142,17 +161,26 @@ class SidebarContent extends StatelessWidget {
     );
   }
 
-  Widget _buildRequestItem(RequestItem request, bool isCodeActive, int collectionIndex, int codeIndex, int requestIndex) {
-    final isRequestActive = isCodeActive && collectionController.activeRequestIndex.value == requestIndex;
+  Widget _buildRequestItem(RequestItem request, bool isCodeActive,
+      int collectionIndex, int codeIndex, int requestIndex) {
+    final RequestController requestController = Get.put(RequestController());
+
+    final isRequestActive = isCodeActive &&
+        collectionController.activeRequestIndex.value == requestIndex;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: InkWell(
-        onTap: () => collectionController.setActiveIndices(collectionIndex, codeIndex, requestIndex),
+        onTap: () {
+          collectionController.setActiveIndices(collectionIndex, codeIndex, requestIndex);
+          requestController.setActiveRequest(requestIndex);
+        },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: isRequestActive ? Colors.white.withOpacity(0.1) : Colors.transparent,
+            color: isRequestActive
+                ? Colors.white.withOpacity(0.1)
+                : Colors.transparent,
           ),
           padding: const EdgeInsets.only(left: 48, top: 4, bottom: 4, right: 8),
           child: Row(
@@ -163,13 +191,49 @@ class SidebarContent extends StatelessWidget {
                 color: isRequestActive ? Colors.white : Colors.white38,
               ),
               const SizedBox(width: 8),
-              Text(
-                request.name,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: isRequestActive ? Colors.white : Colors.white38,
-                  fontWeight: isRequestActive ? FontWeight.bold : FontWeight.normal,
+              Expanded(
+                child: Text(
+                  request.name,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: isRequestActive ? Colors.white : Colors.white38,
+                    fontWeight:
+                    isRequestActive ? FontWeight.bold : FontWeight.normal,
+                  ),
                 ),
+              ),
+              PopupMenuButton<String>(
+                icon: const FaIcon(
+                  FontAwesomeIcons.ellipsisVertical,
+                  size: 14,
+                  color: Colors.white38,
+                ),
+                color: const Color(0xFF1A1E2D),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'delete_request',
+                    child: Row(
+                      children: const [
+                        FaIcon(
+                          FontAwesomeIcons.trash,
+                          size: 14,
+                          color: Colors.red,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          'Delete Request',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                onSelected: (value) {
+                  if (value == 'delete_request') {
+                    collectionController.deleteRequest(
+                        collectionIndex, codeIndex, requestIndex);
+                  }
+                },
               ),
             ],
           ),
@@ -204,14 +268,34 @@ class SidebarContent extends StatelessWidget {
             ],
           ),
         ),
+        PopupMenuItem(
+          value: 'delete_code',
+          child: Row(
+            children: const [
+              FaIcon(
+                FontAwesomeIcons.trash,
+                size: 14,
+                color: Colors.red,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Delete Code',
+                style: TextStyle(color: Colors.red),
+              ),
+            ],
+          ),
+        ),
       ],
       onSelected: (value) {
         if (value == 'add_code') {
           onAddCode(collectionIndex);
+        } else if (value == 'delete_code') {
+          collectionController.deleteCollection(collectionIndex);
         }
       },
     );
   }
+
 
   Widget _buildCodeMenu(int collectionIndex, int codeIndex) {
     return PopupMenuButton<String>(
@@ -221,7 +305,8 @@ class SidebarContent extends StatelessWidget {
         color: Colors.white54,
       ),
       color: const Color(0xFF1A1E2D),
-      itemBuilder: (context) => [
+      itemBuilder: (context) =>
+      [
         PopupMenuItem(
           value: 'add_request',
           child: Row(
@@ -239,10 +324,29 @@ class SidebarContent extends StatelessWidget {
             ],
           ),
         ),
+        PopupMenuItem(
+          value: 'delete_code',
+          child: Row(
+            children: const [
+              FaIcon(
+                FontAwesomeIcons.trash,
+                size: 14,
+                color: Colors.red,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Delete Code',
+                style: TextStyle(color: Colors.red),
+              ),
+            ],
+          ),
+        ),
       ],
       onSelected: (value) {
         if (value == 'add_request') {
           onAddRequest(collectionIndex, codeIndex);
+        } else if (value == 'delete_code') {
+          collectionController.deleteCode(collectionIndex, codeIndex);
         }
       },
     );

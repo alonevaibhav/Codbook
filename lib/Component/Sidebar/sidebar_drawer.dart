@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Controller/SideBarController/SidebarController.dart';
+import '../../Testing/dashboard.dart';
 import '../../View/Dashboard/dashboard_web.dart';
 import 'sidebar_menu_item.dart';
 import 'table_list_item.dart';
@@ -40,13 +41,13 @@ class SidebarDrawer extends GetView<SidebarController> {
                     index: 0,
                     title: 'Dashboard',
                     icon: Icons.dashboard_outlined,
-                    onTap: () => Get.to(() => DashboardWeb()),
+                    onTap: () => Get.to(() => Dashboardoo()),
                   ),
                   SidebarMenuItem(
                     index: 1,
                     title: 'User Profile',
                     icon: Icons.person_outline,
-                    onTap: () => Get.to(() => DashboardWeb()),
+                    onTap: () => Get.to(() => Dashboardoo()),
                   ),
                   const TableListItem(index: 2),
                   SidebarMenuItem(
