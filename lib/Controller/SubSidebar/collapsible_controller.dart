@@ -23,4 +23,14 @@ class CollapsibleController extends GetxController {
       _collapsedCollections[collectionIndex] = !isCollapsed(collectionIndex);
     }
   }
+
+  var activeCollectionIndex = (-1).obs;
+  var activeCodeIndex = (-1).obs;
+  var activeRequestIndex = (-1).obs;
+
+  void setActiveIndices(int collectionIndex, int codeIndex, int requestIndex) {
+    activeCollectionIndex.value = collectionIndex;
+    activeCodeIndex.value = codeIndex;
+    activeRequestIndex.value = requestIndex;
+  }
 }

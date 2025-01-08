@@ -377,8 +377,7 @@ import '../../Controller/SubSidebar/CollectionController.dart';
 class DashboardSidebar extends StatelessWidget {
   DashboardSidebar({Key? key}) : super(key: key);
 
-  final CollectionController collectionController =
-      Get.put(CollectionController());
+  final CollectionController collectionController = Get.put(CollectionController());
 
   void _showAddCollectionDialog(BuildContext context) {
     showDialog(
@@ -446,8 +445,7 @@ class DashboardSidebar extends StatelessWidget {
                     onAddCollection: () => _showAddCollectionDialog(context),
                     onAddCode: (index) => _showAddCodeDialog(context, index),
                     onAddRequest: (collectionIndex, codeIndex) =>
-                        _showAddRequestDialog(
-                            context, collectionIndex, codeIndex),
+                        _showAddRequestDialog(context, collectionIndex, codeIndex),
                   ),
                 ],
               ),

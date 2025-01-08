@@ -12,7 +12,7 @@ class CollectionController extends GetxController {
 
   void setActiveIndices([int? collectionIndex, int? codeIndex, int? requestIndex]) {
     activeCollectionIndex.value = collectionIndex ?? -1;
-    activeCodeIndex.value = codeIndex ?? -1;
+    activeCodeIndex.value = codeIndex ?? 1;
     activeRequestIndex.value = requestIndex ?? -1;
   }
 

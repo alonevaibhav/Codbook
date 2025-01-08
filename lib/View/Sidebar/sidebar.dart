@@ -9,20 +9,23 @@ class SidebarView extends GetView<SidebarController> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Sidebar Drawer
-        SidebarDrawer(),
-
-        // Nested Dashboard Sidebar
-        Obx(() {
-          // Check if the subSidebar should be visible
-          return controller.isSubSidebarVisible.value
-              ? DashboardSidebar()
-              : const SizedBox.shrink();
-        }),
-      ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Sidebar Drawer
+          SidebarDrawer(),
+      
+          // Nested Dashboard Sidebar
+          // Obx(() {
+          //   // Check if the subSidebar should be visible
+          //   return controller.isSubSidebarVisible.value
+          //       ? DashboardSidebar()
+          //       : const SizedBox.shrink();
+          // }),
+        ],
+      ),
     );
   }
 }
