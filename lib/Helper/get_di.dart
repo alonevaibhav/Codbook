@@ -1,12 +1,13 @@
-
-
-
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/bindings_interface.dart';
+
+import '../Controller/SubSidebar/CollectionController.dart';
 
 
-Future<void> init() async{
-  // Get.lazyPut(()=>AuthController(), fenix: true);
-  // In your bindings file or where you register your dependencies
-  // Get.lazyPut(() => DashboardSidebarController(), fenix: true);
-
+class RequestPageBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(CollectionController());
+  }
 }

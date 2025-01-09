@@ -10,9 +10,10 @@ class CollectionController extends GetxController {
   final activeCodeIndex = RxInt(-1);
   final activeRequestIndex = RxInt(-1);
 
+
   void setActiveIndices([int? collectionIndex, int? codeIndex, int? requestIndex]) {
     activeCollectionIndex.value = collectionIndex ?? -1;
-    activeCodeIndex.value = codeIndex ?? 1;
+    activeCodeIndex.value = codeIndex ?? -1;
     activeRequestIndex.value = requestIndex ?? -1;
   }
 
@@ -30,7 +31,6 @@ class CollectionController extends GetxController {
     if (codeName.trim().isNotEmpty &&
         collectionIndex >= 0 &&
         collectionIndex < collections.length) {
-
       final List<CodeItem> updatedCodeItems = [
         ...collections[collectionIndex].codeItems,
         CodeItem(name: codeName.trim(), requests: [])
@@ -40,7 +40,6 @@ class CollectionController extends GetxController {
         name: collections[collectionIndex].name,
         codeItems: updatedCodeItems,
       );
-
       update();
     }
   }
@@ -62,6 +61,8 @@ class CollectionController extends GetxController {
           name: requestName.trim(),
           method: 'GET',
           url: '',
+          codeSnippets: [],
+          links: [],
         )
       ];
 
@@ -155,4 +156,87 @@ class CollectionController extends GetxController {
       update();
     }
   }
+
+
+
+  void addCodeSnippetToRequest(int collectionIndex, int codeIndex, int requestIndex, CodeSnippet snippet) {
+    if (isValidRequestPath(collectionIndex, codeIndex, requestIndex)) {
+      final request = collections[collectionIndex]
+          .codeItems[codeIndex]
+          .requests[requestIndex];
+
+      final updatedRequest = RequestItem(
+        name: request.name,
+        method: request.method,
+        url: request.url,
+        codeSnippets: [...request.codeSnippets, snippet],
+        links: request.links,
+      );
+
+      updateRequest(collectionIndex, codeIndex, requestIndex, updatedRequest);
+    }
+  }
+
+  void addLinkToRequest(int collectionIndex, int codeIndex, int requestIndex, Link link) {
+    if (isValidRequestPath(collectionIndex, codeIndex, requestIndex)) {
+      final request = collections[collectionIndex]
+          .codeItems[codeIndex]
+          .requests[requestIndex];
+
+      final updatedRequest = RequestItem(
+        name: request.name,
+        method: request.method,
+        url: request.url,
+        codeSnippets: request.codeSnippets,
+        links: [...request.links, link],
+      );
+
+      updateRequest(collectionIndex, codeIndex, requestIndex, updatedRequest);
+    }
+  }
+
+  void updateRequest(int collectionIndex, int codeIndex, int requestIndex, RequestItem updatedRequest) {
+    if (isValidRequestPath(collectionIndex, codeIndex, requestIndex)) {
+      final collection = collections[collectionIndex];
+      final codeItems = [...collection.codeItems];
+      final codeItem = codeItems[codeIndex];
+      final requests = [...codeItem.requests];
+
+      requests[requestIndex] = updatedRequest;
+
+      codeItems[codeIndex] = CodeItem(
+        name: codeItem.name,
+        requests: requests,
+      );
+
+      collections[collectionIndex] = CollectionItem(
+        name: collection.name,
+        codeItems: codeItems,
+      );
+
+      update();
+    }
+  }
+
+  bool isValidRequestPath(int collectionIndex, int codeIndex, int requestIndex) {
+    return collectionIndex >= 0 &&
+        collectionIndex < collections.length &&
+        codeIndex >= 0 &&
+        codeIndex < collections[collectionIndex].codeItems.length &&
+        requestIndex >= 0 &&
+        requestIndex < collections[collectionIndex].codeItems[codeIndex].requests.length;
+  }
+
+  RequestItem? getCurrentRequest() {
+    if (activeCollectionIndex.value >= 0 &&
+        activeCodeIndex.value >= 0 &&
+        activeRequestIndex.value >= 0) {
+      return collections[activeCollectionIndex.value]
+          .codeItems[activeCodeIndex.value]
+          .requests[activeRequestIndex.value];
+    }
+    return null;
+  }
+
+
 }

@@ -4,8 +4,8 @@ import 'package:codbook/View/Dashboard/dashboard_tab.dart';
 import 'package:codbook/View/Dashboard/dashboard_web.dart';
 import 'package:flutter/cupertino.dart';
 
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
+class Dashboard extends StatelessWidget {
+  const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
