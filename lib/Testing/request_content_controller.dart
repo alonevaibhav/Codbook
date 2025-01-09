@@ -52,7 +52,7 @@ class RequestContentController extends GetxController {
     super.onClose();
   }
 
-    void editCode(int index) {
+  void editCode(int index) {
     final snippet = codeSnippets[index];
     final titleController = TextEditingController(text: snippet.title);
     final descriptionController = TextEditingController(text: snippet.description);
