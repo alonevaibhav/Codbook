@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../Component/SubSidebar/SidebarComponents/sidebar_content.dart';
 import '../Controller/SubSidebar/CollectionController.dart';
+import '../Model/SubSidebarModel/subsidebar_model.dart';
 
 class RequestPageView extends StatelessWidget {
   final String requestId;
